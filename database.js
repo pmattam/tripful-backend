@@ -36,7 +36,7 @@ let getAllTrips = () => {
 
 let insertTrip = (userid, name, source, destination, startdate, enddate, description, plans) => {
     let qstr = `INSERT INTO trips (userid, name, source, destination, startdate, enddate, description, plans)
-        VALUES ('${userid}', '${name}', '${source}', '${destination}', ${startdate}, '${enddate}', '${description}', '${plans}'}');`;
+        VALUES ('${userid}', '${name}', '${source}', '${destination}', '${startdate}', '${enddate}', '${description}', '${plans}');`;
     console.log(qstr);
     return db.query(qstr);
 };

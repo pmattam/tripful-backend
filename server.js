@@ -28,7 +28,12 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use(express.static(path.join(__dirname, 'build')));
+app.use(express.static(path.join(__dirname, 'static')));
+
+// index landing page
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/static/index.html'));
+});
 
 // useful for grabing data out of post requests
 app.use(bodyParser.urlencoded({
@@ -44,8 +49,16 @@ app.get("/users", function(req, res) {
     getUsers(req, res);
 });
 
-app.post("/login", function(req, res) {
+app.get("/trips", function(req, res) {
+    getTrips(req, res);
+});
+
+app.post("/trips", function(req, res) {
     console.log(req.body);
+    createTrip(req, res);
+});
+
+app.post("/login", function(req, res) {
     processLogin(req, res);
 });
 
@@ -159,5 +172,25 @@ let getUsers = (req, res) => {
             })
     }
 };
+
+let createTrip = (req, res) => {
+    console.log("createTrip", req.body);
+    let tripData = req.body;
+    db.insertTrip(tripData.userid, tripData.name, tripData.source, tripData.destination, tripData.startdate, tripData.enddate, tripData.description, JSON.stringify(tripData.plans))
+        .then(() => res.end("New Trip Stored"))
+        .catch(error => {
+            console.log(error);
+            res.end("Failed to store Trip");
+        })
+};
+
+let getTrips = (req, res) => {
+    //if (userAuthorization(req, res)) {
+    db.getAllTrips()
+        .then(tripsList => {
+            res.end(JSON.stringify(tripsList));
+        })
+        //}
+}
 
 app.listen(process.env.PORT || 3000, () => console.log("Server is now listening."));
