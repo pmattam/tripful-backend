@@ -2,13 +2,13 @@ const pg = require('pg-promise')();
 
 const builder = process.env.USER
 const dbconfig = {
-    host: 'localhost',
-    port: 5432,
-    database: 'tripful',
-    user: builder,
-    password: 'digitalcrafts'
-}
-//const db = pg(dbconfig);
+        host: 'localhost',
+        port: 5432,
+        database: 'tripful',
+        user: builder,
+        password: 'digitalcrafts'
+    }
+    //const db = pg(dbconfig);
 const db = pg(process.env.DATABASE_URL);
 
 let findUser = (attribute, input) => {
@@ -30,8 +30,8 @@ let insertUser = (username, password, location, email) => {
     return db.query(qstr);
 };
 
-let getAllTrips = () => {
-    return db.query("SELECT * FROM trips;")
+let getAllTrips = (id) => {
+    return db.query(`SELECT * FROM trips where userid = ${id};`)
 };
 
 let insertTrip = (userid, name, source, destination, startdate, enddate, description, plans) => {

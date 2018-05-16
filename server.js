@@ -175,22 +175,28 @@ let getUsers = (req, res) => {
 
 let createTrip = (req, res) => {
     console.log("createTrip", req.body);
-    let tripData = req.body;
-    db.insertTrip(tripData.userid, tripData.name, tripData.source, tripData.destination, tripData.startdate, tripData.enddate, tripData.description, JSON.stringify(tripData.plans))
-        .then(() => res.end("New Trip Stored"))
-        .catch(error => {
-            console.log(error);
-            res.end("Failed to store Trip");
-        })
+    let userid = userAuthorization(req, res);
+    if (userid) {
+        let tripData = req.body;
+        db.insertTrip(userid, tripData.name, tripData.source, tripData.destination, tripData.startdate, tripData.enddate, tripData.description, JSON.stringify(tripData.plans))
+            .then(() => res.end("New Trip Stored"))
+            .catch(error => {
+                console.log(error);
+                res.end("Failed to store Trip");
+            })
+    } else {
+        console.log('Invalid User');
+    }
 };
 
 let getTrips = (req, res) => {
-    //if (userAuthorization(req, res)) {
-    db.getAllTrips()
-        .then(tripsList => {
-            res.end(JSON.stringify(tripsList));
-        })
-        //}
+    let id = userAuthorization(req, res);
+    if (id) {
+        db.getAllTrips(id)
+            .then(tripsList => {
+                res.end(JSON.stringify(tripsList));
+            })
+    }
 }
 
 app.listen(process.env.PORT || 3000, () => console.log("Server is now listening."));

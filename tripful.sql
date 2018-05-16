@@ -17,8 +17,8 @@ CREATE TABLE trips (
   name VARCHAR (150) UNIQUE NOT NULL,
   source VARCHAR (150),
   destination VARCHAR (150),
-  startdate TIMESTAMP,
-  enddate TIMESTAMP,
+  startdate DATE,
+  enddate DATE,
   description VARCHAR (150),
   plans JSON
 );
