@@ -179,10 +179,19 @@ let createTrip = (req, res) => {
     if (userid) {
         let tripData = req.body;
         db.insertTrip(userid, tripData.name, tripData.source, tripData.destination, tripData.startdate, tripData.enddate, tripData.description, JSON.stringify(tripData.plans))
-            .then(() => res.end("New Trip Stored"))
+            .then(() => {
+                statusObj = {};
+                statusObj.status = "success";
+                statusObj.reason = "New Trip Stored";
+                res.end(JSON.stringify(statusObj));
+            })
             .catch(error => {
                 console.log(error);
-                res.end("Failed to store Trip");
+                errorObj = {};
+                errorObj.status = "failed";
+                errorObj.reason = "Failed to store Trip";
+                console.log(error);
+                res.end(JSON.stringify(errorObj));
             })
     } else {
         console.log('Invalid User');
