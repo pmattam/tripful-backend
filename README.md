@@ -41,4 +41,11 @@ RESULTS:
   "jwt":"user's token"
 }
 ```
+`/trips`
+Save a trip with all the plans
+
+**GET**
+
+`/trips`
+Retrives all the trips for the user
 
